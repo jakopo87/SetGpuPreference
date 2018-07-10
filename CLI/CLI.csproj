@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0445AFBF-4C02-4F3F-9D4D-67BC62EC8951}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CLI</RootNamespace>
-    <AssemblyName>CLI</AssemblyName>
+    <RootNamespace>SetGpuPreferences</RootNamespace>
+    <AssemblyName>SetGpuPreferences</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
