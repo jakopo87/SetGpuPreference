@@ -29,6 +29,16 @@ namespace CLI
 				var arg = args[0];
 				switch (arg)
 				{
+					case "add":
+						if (args.Count() == 3)
+						{
+							AddPreference(args[1], args[2]);
+						}
+						else
+						{
+							PrintAddUsage();
+						}
+						break;
 					case "help":
 						PrintDetailedHelp();
 						break;
@@ -40,6 +50,29 @@ namespace CLI
 						break;
 				}
 			}
+		}
+
+		private static void PrintAddUsage()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			builder.AppendLine();
+			builder.AppendLine("Set the GPU preference for an app");
+			builder.AppendLine();
+			builder.AppendLine("Usage:");
+			builder.AppendLine(AppDomain.CurrentDomain.FriendlyName + " add <full-path> <preference>");
+			builder.AppendLine();
+			builder.AppendLine("Params:");
+			builder.AppendLine("full-path: \t\t Absolute path to the executable app");
+			builder.AppendLine("preference: \t\t 0 = Default, 1 = Power saving, 2 = Max performance");
+
+			Console.WriteLine(builder.ToString());
+		}
+
+		private static void AddPreference(string v1, string v2)
+		{
+
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -60,7 +93,7 @@ namespace CLI
 			StringBuilder builder = new StringBuilder();
 
 			builder.AppendLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " <command> [<params>]");
-			builder.AppendLine("");
+			builder.AppendLine();
 			builder.AppendLine("Available commands:");
 			builder.AppendLine("add: \t\t Add an app to the list");
 			builder.AppendLine("help: \t\t Print this list");
