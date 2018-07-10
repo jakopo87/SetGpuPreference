@@ -52,6 +52,9 @@ namespace CLI
 			Console.WriteLine("Use '" + AppDomain.CurrentDomain.FriendlyName + " help' for a detailed list of all the commands ");
 		}
 
+		/// <summary>
+		/// Print the help guide
+		/// </summary>
 		private static void PrintDetailedHelp()
 		{
 			StringBuilder builder = new StringBuilder();
@@ -61,12 +64,15 @@ namespace CLI
 			builder.AppendLine("Available commands:");
 			builder.AppendLine("add: \t\t Add an app to the list");
 			builder.AppendLine("help: \t\t Print this list");
-			builder.AppendLine("list: \t\t List the preferences");
+			builder.AppendLine("list: \t\t List the current GPU preferences");
 			builder.AppendLine("remove: \t Add an app to the list");
 
 			Console.WriteLine(builder.ToString());
 		}
 
+		/// <summary>
+		/// List the current GPU preferences
+		/// </summary>
 		private static void ListPreferences()
 		{
 			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\DirectX\UserGpuPreferences", true);
