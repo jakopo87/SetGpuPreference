@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -8,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace CLI
 {
+	/// <summary>
+	/// Computer\HKEY_CURRENT_USER\Software\Microsoft\DirectX\UserGpuPreferences
+	/// </summary>
 	class Constants
 	{
 		public const string Default = "GpuPreference=0;";
@@ -19,35 +23,45 @@ namespace CLI
 	{
 		static void Main(string[] args)
 		{
-			foreach (var arg in args)
+			var length = args.Count();
+			for (int i = 0; i < length; ++i)
 			{
+				var arg = args[0];
 				switch (arg)
 				{
-					case "-h":
-					case "--help":
+					case "help":
 						PrintDetailedHelp();
 						break;
-					case "-l":
-					case "--list":
+					case "list":
 						ListPreferences();
 						break;
 					default:
-						PrintUsage();
+						PrintUnknownCommand(arg);
 						break;
 				}
 			}
-
-
 		}
 
-		private static void PrintUsage()
+		/// <summary>
+		/// Unknown command
+		/// </summary>
+		/// <param name="c">Unknown used</param>
+		private static void PrintUnknownCommand(string c)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine("Unknown command '{0}'", c);
+			Console.WriteLine("Use '" + AppDomain.CurrentDomain.FriendlyName + " help' for a detailed list of all the commands ");
 		}
 
 		private static void PrintDetailedHelp()
 		{
-			throw new NotImplementedException();
+			StringBuilder builder = new StringBuilder();
+
+			builder.AppendLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " <command> [<params>]");
+			builder.AppendLine("");
+			builder.AppendLine("Available commands:");
+			builder.AppendLine("list - List the preferences");
+
+			Console.WriteLine(builder.ToString());
 		}
 
 		private static void ListPreferences()
