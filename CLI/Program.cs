@@ -59,7 +59,10 @@ namespace CLI
 			builder.AppendLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " <command> [<params>]");
 			builder.AppendLine("");
 			builder.AppendLine("Available commands:");
-			builder.AppendLine("list - List the preferences");
+			builder.AppendLine("add: \t\t Add an app to the list");
+			builder.AppendLine("help: \t\t Print this list");
+			builder.AppendLine("list: \t\t List the preferences");
+			builder.AppendLine("remove: \t Add an app to the list");
 
 			Console.WriteLine(builder.ToString());
 		}
