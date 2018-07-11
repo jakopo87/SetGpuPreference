@@ -24,32 +24,40 @@ namespace CLI
 		static void Main(string[] args)
 		{
 			var length = args.Count();
-			for (int i = 0; i < length; ++i)
+			if (length == 0)
 			{
-				var arg = args[0];
-				switch (arg)
+				PrintDetailedHelp();
+			}
+			else
+			{
+				for (int i = 0; i < length; ++i)
 				{
-					case "add":
-						if (args.Count() == 3)
-						{
-							AddPreference(args[1], args[2]);
-						}
-						else
-						{
-							PrintAddUsage();
-						}
-						break;
-					case "help":
-						PrintDetailedHelp();
-						break;
-					case "list":
-						ListPreferences();
-						break;
-					default:
-						PrintUnknownCommand(arg);
-						break;
+					var arg = args[0];
+					switch (arg)
+					{
+						case "add":
+							if (args.Count() == 3)
+							{
+								AddPreference(args[1], args[2]);
+							}
+							else
+							{
+								PrintAddUsage();
+							}
+							break;
+						case "help":
+							PrintDetailedHelp();
+							break;
+						case "list":
+							ListPreferences();
+							break;
+						default:
+							PrintUnknownCommand(arg);
+							break;
+					}
 				}
 			}
+
 		}
 
 		private static void PrintAddUsage()
@@ -71,8 +79,7 @@ namespace CLI
 
 		private static void AddPreference(string v1, string v2)
 		{
-
-			throw new NotImplementedException();
+			Console.WriteLine("{0} {1}", v1, v2);
 		}
 
 		/// <summary>
@@ -92,6 +99,7 @@ namespace CLI
 		{
 			StringBuilder builder = new StringBuilder();
 
+			builder.AppendLine();
 			builder.AppendLine("Usage: " + AppDomain.CurrentDomain.FriendlyName + " <command> [<params>]");
 			builder.AppendLine();
 			builder.AppendLine("Available commands:");
