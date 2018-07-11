@@ -49,6 +49,16 @@ namespace CLI
 							PrintAddUsage();
 						}
 						return;
+					case "delete":
+						if (args.Count() == 2)
+						{
+							RemovePreference(args[1]);
+						}
+						else
+						{
+							PrintDeleteUsage();
+						}
+						return;
 					case "help":
 						PrintDetailedHelp();
 						return;
@@ -63,6 +73,22 @@ namespace CLI
 
 		}
 
+		private static void PrintDeleteUsage()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			builder.AppendLine();
+			builder.AppendLine("Delete the GPU preference for an app");
+			builder.AppendLine();
+			builder.AppendLine("Usage:");
+			builder.AppendLine(AppDomain.CurrentDomain.FriendlyName + " delete <path>");
+			builder.AppendLine();
+			builder.AppendLine("Params:");
+			builder.AppendLine("path: \t\t Path to the executable app");
+
+			Console.WriteLine(builder.ToString());
+		}
+
 		private static void PrintAddUsage()
 		{
 			StringBuilder builder = new StringBuilder();
@@ -71,10 +97,10 @@ namespace CLI
 			builder.AppendLine("Set the GPU preference for an app");
 			builder.AppendLine();
 			builder.AppendLine("Usage:");
-			builder.AppendLine(AppDomain.CurrentDomain.FriendlyName + " add <full-path> <preference>");
+			builder.AppendLine(AppDomain.CurrentDomain.FriendlyName + " add <path> <preference>");
 			builder.AppendLine();
 			builder.AppendLine("Params:");
-			builder.AppendLine("full-path: \t\t Absolute path to the executable app");
+			builder.AppendLine("path: \t\t Path to the executable app");
 			builder.AppendLine("preference: \t\t 0 = Default, 1 = Power saving, 2 = Max performance");
 
 			Console.WriteLine(builder.ToString());
@@ -90,6 +116,24 @@ namespace CLI
 				key.SetValue(fullPath, String.Format(registryValue, pref), RegistryValueKind.String);
 
 				Console.WriteLine("Set GPU preference for {0} to {1}", fullPath, GpuLabel(pref));
+			}
+			else
+			{
+				Console.WriteLine("{0} does not exists", path);
+			}
+		}
+
+		private static void RemovePreference(string path)
+		{
+			if (File.Exists(path))
+			{
+				var fullPath = Path.GetFullPath(path);
+
+				var key = Registry.CurrentUser.OpenSubKey(registryPath, true);
+
+				key.DeleteValue(fullPath);
+
+				Console.WriteLine("Deleted GPU preference for {0}", fullPath);
 			}
 			else
 			{
