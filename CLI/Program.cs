@@ -15,13 +15,14 @@ namespace CLI
 		private const string DEFAULT_GPU = "0";
 		private const string POWER_SAVE_GPU = "1";
 		private const string MAX_PERF_GPU = "2";
+		private const string registryValue = "GpuPreference={0};";
 
 
 		private Dictionary<string, string> GpuRegistyValues = new Dictionary<string, string>()
 		{
-			{DEFAULT_GPU,"GpuPreference=" + DEFAULT_GPU + ";" },
-			{DEFAULT_GPU,"GpuPreference=" + POWER_SAVE_GPU + ";" },
-			{DEFAULT_GPU,"GpuPreference=" + MAX_PERF_GPU + ";" }
+			{DEFAULT_GPU,String.Format(registryValue,DEFAULT_GPU) },
+			{POWER_SAVE_GPU,String.Format(registryValue,POWER_SAVE_GPU) },
+			{MAX_PERF_GPU,String.Format(registryValue,MAX_PERF_GPU) }
 		};
 
 		static void Main(string[] args)
@@ -33,31 +34,28 @@ namespace CLI
 			}
 			else
 			{
-				for (int i = 0; i < length; ++i)
+				var arg = args[0];
+				switch (arg)
 				{
-					var arg = args[0];
-					switch (arg)
-					{
-						case "add":
-							if (args.Count() == 3)
-							{
-								AddPreference(args[1], args[2]);
-							}
-							else
-							{
-								PrintAddUsage();
-							}
-							return;
-						case "help":
-							PrintDetailedHelp();
-							return;
-						case "list":
-							ListPreferences();
-							return;
-						default:
-							PrintUnknownCommand(arg);
-							return;
-					}
+					case "add":
+						if (args.Count() == 3)
+						{
+							AddPreference(args[1], args[2]);
+						}
+						else
+						{
+							PrintAddUsage();
+						}
+						return;
+					case "help":
+						PrintDetailedHelp();
+						return;
+					case "list":
+						ListPreferences();
+						return;
+					default:
+						PrintUnknownCommand(arg);
+						return;
 				}
 			}
 
