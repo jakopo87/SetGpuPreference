@@ -25,6 +25,8 @@ namespace CLI
 			{MAX_PERF_GPU,String.Format(registryValue,MAX_PERF_GPU) }
 		};
 
+		private static string registryPath = @"Software\Microsoft\DirectX\UserGpuPreferences";
+
 		static void Main(string[] args)
 		{
 			var length = args.Count();
@@ -82,12 +84,16 @@ namespace CLI
 		{
 			if (File.Exists(path))
 			{
-				var p = Path.GetFullPath(path);
-				Console.WriteLine("Set GPU preference for {0} to {1}", p, GpuLabel(pref));
+				var fullPath = Path.GetFullPath(path);
+
+				var key = Registry.CurrentUser.OpenSubKey(registryPath, true);
+				key.SetValue(fullPath, String.Format(registryValue, pref), RegistryValueKind.String);
+
+				Console.WriteLine("Set GPU preference for {0} to {1}", fullPath, GpuLabel(pref));
 			}
 			else
 			{
-				Console.WriteLine("Wrong path");
+				Console.WriteLine("{0} does not exists", path);
 			}
 		}
 
@@ -125,7 +131,7 @@ namespace CLI
 		/// </summary>
 		private static void ListPreferences()
 		{
-			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\DirectX\UserGpuPreferences", true);
+			var key = Registry.CurrentUser.OpenSubKey(registryPath, true);
 			foreach (var item in key.GetValueNames())
 			{
 				var s = key.GetValue(item) as string;
