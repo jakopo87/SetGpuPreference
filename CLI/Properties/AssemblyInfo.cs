@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
-[assembly: AssemblyTitle("SetGpuPreferences")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SetGpuPreference")]
+[assembly: AssemblyDescription("Set Gpu preference for an app")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jacopo Galati")]
-[assembly: AssemblyProduct("SetGpuPreferences")]
+[assembly: AssemblyProduct("SetGpuPreference")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
