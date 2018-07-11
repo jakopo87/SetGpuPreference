@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace CLI
 {
-	/// <summary>
-	/// Computer\HKEY_CURRENT_USER\Software\Microsoft\DirectX\UserGpuPreferences
-	/// </summary>
-	class Constants
-	{
-		public const string Default = "GpuPreference=0;";
-		public const string PowerSaving = "GpuPreference=1;";
-		public const string MaxPerformance = "GpuPreference=2;";
-	}
-
 	class Program
 	{
+		private const string DEFAULT_GPU = "0";
+		private const string POWER_SAVE_GPU = "1";
+		private const string MAX_PERF_GPU = "2";
+
+
+		private Dictionary<string, string> GpuRegistyValues = new Dictionary<string, string>()
+		{
+			{DEFAULT_GPU,"GpuPreference=" + DEFAULT_GPU + ";" },
+			{DEFAULT_GPU,"GpuPreference=" + POWER_SAVE_GPU + ";" },
+			{DEFAULT_GPU,"GpuPreference=" + MAX_PERF_GPU + ";" }
+		};
+
 		static void Main(string[] args)
 		{
 			var length = args.Count();
@@ -44,16 +47,16 @@ namespace CLI
 							{
 								PrintAddUsage();
 							}
-							break;
+							return;
 						case "help":
 							PrintDetailedHelp();
-							break;
+							return;
 						case "list":
 							ListPreferences();
-							break;
+							return;
 						default:
 							PrintUnknownCommand(arg);
-							break;
+							return;
 					}
 				}
 			}
@@ -77,9 +80,17 @@ namespace CLI
 			Console.WriteLine(builder.ToString());
 		}
 
-		private static void AddPreference(string v1, string v2)
+		private static void AddPreference(string path, string pref)
 		{
-			Console.WriteLine("{0} {1}", v1, v2);
+			if (File.Exists(path))
+			{
+				var p = Path.GetFullPath(path);
+				Console.WriteLine("Set GPU preference for {0} to {1}", p, GpuLabel(pref));
+			}
+			else
+			{
+				Console.WriteLine("Wrong path");
+			}
 		}
 
 		/// <summary>
@@ -119,7 +130,8 @@ namespace CLI
 			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\DirectX\UserGpuPreferences", true);
 			foreach (var item in key.GetValueNames())
 			{
-				Console.WriteLine(item + " = >" + GpuLabel(key.GetValue(item) as string));
+				var s = key.GetValue(item) as string;
+				Console.WriteLine(item + " = >" + GpuLabel(s.Substring(14, 1)));
 			}
 		}
 
@@ -127,12 +139,12 @@ namespace CLI
 		{
 			switch (s)
 			{
-				case Constants.Default:
-					return "Default";
-				case Constants.PowerSaving:
-					return "Power saving";
-				case Constants.MaxPerformance:
-					return "Max performance";
+				case DEFAULT_GPU:
+					return "Default GPU";
+				case POWER_SAVE_GPU:
+					return "Power saving GPU";
+				case MAX_PERF_GPU:
+					return "Max performance GPU";
 				default:
 					return "Unknown value";
 			}
