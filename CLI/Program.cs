@@ -165,7 +165,7 @@ namespace CLI
 			builder.AppendLine("add: \t\t Add an app to the list");
 			builder.AppendLine("help: \t\t Print this list");
 			builder.AppendLine("list: \t\t List the current GPU preferences");
-			builder.AppendLine("remove: \t Add an app to the list");
+			builder.AppendLine("delete: \t Delete an app from the list");
 
 			Console.WriteLine(builder.ToString());
 		}
