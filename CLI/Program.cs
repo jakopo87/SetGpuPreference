@@ -25,7 +25,16 @@ namespace CLI
 			{MAX_PERF_GPU,String.Format(registryValue,MAX_PERF_GPU) }
 		};
 
+		private static Dictionary<string, string> ShellExtValues = new Dictionary<string, string>()
+		{
+			{"Default","add %1 0"},
+			{"Power Saving","add \"%1\" 1"},
+			{"Max Performance","add \"%1\" 2"},
+			{"Delete","delete \"%1\""}
+		};
+
 		private static string registryPath = @"Software\Microsoft\DirectX\UserGpuPreferences";
+		private static string shellExtPath = @"Software\Classes\exefile\shell";
 
 		static void Main(string[] args)
 		{
@@ -65,11 +74,55 @@ namespace CLI
 					case "list":
 						ListPreferences();
 						return;
+					case "shellinst":
+						AddShellExt();
+						return;
+					case "shelluninst":
+						DeleteShellExt();
+						return;
 					default:
 						PrintUnknownCommand(arg);
 						return;
 				}
 			}
+
+		}
+
+		private static string GetShellRegPath()
+		{
+			return shellExtPath + "\\" + AppDomain.CurrentDomain.FriendlyName;
+		}
+
+		private static void DeleteShellExt()
+		{
+			Registry.CurrentUser.DeleteSubKeyTree(GetShellRegPath());
+
+			Console.WriteLine("Shell extension uninstalled");
+
+		}
+
+		private static void AddShellExt()
+		{
+			var exePath = Assembly.GetEntryAssembly().CodeBase.Substring(8).Replace("/", "\\");
+
+			var key = Registry.CurrentUser.CreateSubKey(GetShellRegPath(), true);
+			key.SetValue("MUIVerb", "Set Gpu preference");
+			key.SetValue("SubCommands", "");
+
+			var shellKey = key.CreateSubKey("Shell", true);
+
+			var i = 1;
+			foreach (var pair in ShellExtValues)
+			{
+				/* Label => Params */
+				var subKey = shellKey.CreateSubKey(i.ToString() + "-" + pair.Key.Replace(" ", ""), true);
+				subKey.SetValue("", pair.Key);
+				var commandKey = subKey.CreateSubKey("command", true);
+				commandKey.SetValue("", exePath + " " + pair.Value);
+				++i;
+			}
+
+			Console.WriteLine("Shell extension installed");
 
 		}
 
@@ -163,9 +216,12 @@ namespace CLI
 			builder.AppendLine();
 			builder.AppendLine("Available commands:");
 			builder.AppendLine("add: \t\t Add an app to the list");
-			builder.AppendLine("help: \t\t Print this list");
-			builder.AppendLine("list: \t\t List the current GPU preferences");
 			builder.AppendLine("delete: \t Delete an app from the list");
+			builder.AppendLine("help: \t\t Print this help");
+			builder.AppendLine("list: \t\t List the current GPU preferences");
+			builder.AppendLine("list: \t\t Remove shell context menu");
+			builder.AppendLine("shellinst: \t Add shell context menu");
+			builder.AppendLine("shelluninst: \t Add shell context menu");
 
 			Console.WriteLine(builder.ToString());
 		}
