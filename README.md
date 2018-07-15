@@ -1,3 +1,5 @@
+![Build status](https://ci.appveyor.com/api/projects/status/s5tnp7o2w7o1n0e7?svg=true)
+
 Set the GPU preference for an app in Windows 10 version 1803.
 
 Usage: 
