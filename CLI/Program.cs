@@ -164,6 +164,10 @@ namespace CLI
 				var fullPath = Path.GetFullPath(path);
 
 				var key = Registry.CurrentUser.OpenSubKey(registryPath, true);
+				if (key == null)
+				{
+					key = Registry.CurrentUser.CreateSubKey(registryPath);
+				}
 				key.SetValue(fullPath, String.Format(registryValue, pref), RegistryValueKind.String);
 
 				Console.WriteLine("Set GPU preference for {0} to {1}", fullPath, GpuLabel(pref));
