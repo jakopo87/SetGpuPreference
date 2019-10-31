@@ -6,5 +6,5 @@ build:
   verbosity: minimal
 artifacts:
 - path: CLI\bin\Release
-  name: SetGpuPreferenze
+  name: SetGpuPreference
 deploy: off

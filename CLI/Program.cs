@@ -18,9 +18,9 @@ namespace CLI
 
 		private Dictionary<string, string> GpuRegistyValues = new Dictionary<string, string>()
 		{
-			{DEFAULT_GPU,String.Format(registryValue,DEFAULT_GPU) },
-			{POWER_SAVE_GPU,String.Format(registryValue,POWER_SAVE_GPU) },
-			{MAX_PERF_GPU,String.Format(registryValue,MAX_PERF_GPU) }
+			{DEFAULT_GPU,string.Format(registryValue,DEFAULT_GPU) },
+			{POWER_SAVE_GPU,string.Format(registryValue,POWER_SAVE_GPU) },
+			{MAX_PERF_GPU,string.Format(registryValue,MAX_PERF_GPU) }
 		};
 
 		private static Dictionary<string, string> ShellExtValues = new Dictionary<string, string>()
@@ -31,8 +31,8 @@ namespace CLI
 			{"Delete","delete \"%1\""}
 		};
 
-		private static string registryPath = @"Software\Microsoft\DirectX\UserGpuPreferences";
-		private static string shellExtPath = @"Software\Classes\exefile\shell";
+		private static readonly string registryPath = @"Software\Microsoft\DirectX\UserGpuPreferences";
+		private static readonly string shellExtPath = @"Software\Classes\exefile\shell";
 
 		static void Main(string[] args)
 		{
